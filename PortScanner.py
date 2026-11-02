@@ -20,7 +20,7 @@ try:
         result = s.connect_ex((target_ip, port))
         if result == 0:
            print(f"Port {port} is OPEN")
-        s.close
+        s.close()
 
 except KeyboardInterrupt:
 
