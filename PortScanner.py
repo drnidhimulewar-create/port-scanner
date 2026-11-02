@@ -1,26 +1,32 @@
 import socket
 from datetime import datetime
 
+socket.setdefaulttimeout(1)
+
 target = input("Enter target IP and hostname: ")
 
-target_ip = socket.gethostbyname(target)
-
-print("-" * 50)
-
-print(f"Scanning Target: {target_ip}")
-print(f"Time Started: {datetime.now()}")
-
-print("-" * 50)
 
 try:
 
+    target_ip = socket.gethostbyname(target)
+
+    print("-" * 50)
+
+    print(f"Scanning Target: {target_ip}")
+
+    print(f"Time Started: {datetime.now()}")
+
+    print("-" * 50)
+
+
     for port in range(1, 1025):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        socket.setdefaulttimeout(1)
-        result = s.connect_ex((target_ip, port))
+        
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as scanner:
+         result = scanner.connect_ex((target_ip, port))
+
         if result == 0:
            print(f"Port {port} is OPEN")
-        s.close()
+        
 
 except KeyboardInterrupt:
 
@@ -30,6 +36,6 @@ except socket.gaierror:
 
     print("Hostname cannot be resolved.")
 
-except socket.error:
+except socket.error as error:
 
-    print("Server not responding.")
+    print(f"Network error: {error}")
